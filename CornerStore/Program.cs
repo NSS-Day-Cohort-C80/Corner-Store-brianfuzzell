@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using CornerStore.Models.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +37,25 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapPost("/api/cashiers", (CornerStoreDbContext db, Cashier cashier) =>
+{
+    db.Cashiers.Add(cashier);
+    db.SaveChanges();
+    return Results.Created($"/api/cashiers/{cashier.Id}", cashier);
+});
 
+app.MapGet("/api/cashiers/{id}", (IMapper mapper, CornerStoreDbContext db, int id) =>
+{
+    var cashier = db.Cashiers
+    .Where(c => c.Id == id)
+    .Include(c => c.Orders)
+        .ThenInclude(o => o.OrderProducts)
+            .ThenInclude(op => op.Product)
+    .ProjectTo<CashierDTO>(mapper.ConfigurationProvider)
+    .SingleOrDefault();
+
+    return cashier != null ? Results.Ok(cashier) : Results.NotFound();
+});
 
 app.Run();
 

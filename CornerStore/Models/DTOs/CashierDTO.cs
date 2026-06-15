@@ -15,4 +15,5 @@ public class CashierDTO
             return $"{FirstName} {LastName}";
         }
     }
+    public List<OrderDTO> Orders { get; set; }
 }
