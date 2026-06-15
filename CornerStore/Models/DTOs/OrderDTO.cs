@@ -1,14 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+namespace CornerStore.Models.DTOs;
 
-namespace CornerStore.Models;
-
-public class Order
+public class OrderDTO
 {
     public int Id { get; set; }
     [Required]
     public int CashierId { get; set; }
     public Cashier Cashier { get; set; }
-    public List<OrderProduct> OrderProducts { get; set; }
+    public List<OrderProductDTO> OrderProducts { get; set; }
     public decimal Total
     {
         get
@@ -17,5 +16,5 @@ public class Order
         }
     }
     public DateTime PaidOnDate { get; set; }
-    public List<Order> Orders { get; set; }
+    public List<OrderDTO> Orders { get; set; }
 }

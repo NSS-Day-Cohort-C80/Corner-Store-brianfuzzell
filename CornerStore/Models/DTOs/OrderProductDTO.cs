@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+namespace CornerStore.Models.DTOs;
 
-namespace CornerStore.Models;
-
-public class OrderProduct
+public class OrderProductDTO
 {
     [Required]
     public int ProductId { get; set; }
