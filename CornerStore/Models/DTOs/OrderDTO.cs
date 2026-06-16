@@ -6,6 +6,7 @@ public class OrderDTO
     public int Id { get; set; }
     [Required]
     public int CashierId { get; set; }
+    public CashierDTO Cashier { get; set; }
     public List<OrderProductDTO> OrderProducts { get; set; }
     public decimal Total
     {
@@ -14,5 +15,5 @@ public class OrderDTO
             return OrderProducts?.Sum(op => op.Product.Price * op.Quantity) ?? 0;
         }
     }
-    public DateTime PaidOnDate { get; set; }
+    public DateTime? PaidOnDate { get; set; }
 }
