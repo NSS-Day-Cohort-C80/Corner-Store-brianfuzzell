@@ -13,9 +13,8 @@ public class Order
     {
         get
         {
-            return OrderProducts?.Sum(op => op.Product.Price * op.Quantity) ?? 0;
+            return OrderProducts?.Where(op => op.Product != null).Sum(op => op.Product.Price * op.Quantity) ?? 0;
         }
     }
-    public DateTime PaidOnDate { get; set; }
-    public List<Order> Orders { get; set; }
+    public DateTime? PaidOnDate { get; set; }
 }

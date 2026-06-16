@@ -90,6 +90,50 @@ app.MapPut("/api/products/{id}", (CornerStoreDbContext db, Product product, int 
     return Results.NoContent();
 });
 
+app.MapGet("/api/orders", (CornerStoreDbContext db, IMapper mapper, DateTime? orderDate) =>
+{
+    var query = db.Orders
+    .Where(o => orderDate == null || (o.PaidOnDate.HasValue && o.PaidOnDate.Value.Date == orderDate.Value.Date))
+    .Include(o => o.OrderProducts)
+        .ThenInclude(op => op.Product);
+
+    return query.ProjectTo<OrderDTO>(mapper.ConfigurationProvider).ToList();
+});
+
+app.MapGet("/api/orders/{id}", (IMapper mapper, CornerStoreDbContext db, int id) =>
+{
+    var order = db.Orders
+    .Where(o => o.Id == id)
+    .Include(o => o.Cashier)
+    .Include(o => o.OrderProducts)
+        .ThenInclude(op => op.Product)
+            .ThenInclude(p => p.Category)
+    .ProjectTo<OrderDTO>(mapper.ConfigurationProvider)
+    .SingleOrDefault();
+
+    return order != null ? Results.Ok(order) : Results.NotFound();
+});
+
+app.MapPost("/api/orders", (CornerStoreDbContext db, Order order) =>
+{
+    db.Orders.Add(order);
+    db.SaveChanges();
+
+    return Results.Created($"/api/orders/{order.Id}", order);
+});
+
+app.MapDelete("/api/orders/{id}", (CornerStoreDbContext db, int id) =>
+{
+    Order order = db.Orders.SingleOrDefault(o => o.Id == id);
+    if (order == null)
+    {
+        return Results.NotFound();
+    }
+    db.Orders.Remove(order);
+    db.SaveChanges();
+    return Results.NoContent();
+});
+
 app.Run();
 
 //don't move or change this!
