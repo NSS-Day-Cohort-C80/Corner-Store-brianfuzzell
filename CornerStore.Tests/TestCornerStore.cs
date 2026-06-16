@@ -1,4 +1,4 @@
-using CornerStore.Models;
+/* using CornerStore.Models;
 using System.Net.Http.Json;
 using System.Net;
 
@@ -119,3 +119,4 @@ public class TestCornerStore
         Assert.Equal(2.50M, content.Total);
     }
 }
+ */

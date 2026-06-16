@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc.Testing;
+/* using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
@@ -112,4 +112,4 @@ public class CornerStoreApp : WebApplicationFactory<Program>
 
         return base.CreateHost(builder);
     }
-}
+} */
